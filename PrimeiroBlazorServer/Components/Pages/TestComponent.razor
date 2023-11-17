@@ -1,0 +1,55 @@
+﻿@page "/Test"
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+<button class="btn btn-primary" @onclick="ChangeName">Mudar</button>
+<h3>TestComponent</h3>
+@if (isLoading)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <h1>@Name</h1>
+
+}
+
+@if(string.IsNullOrEmpty(Welcome))
+{
+    <p>Loading...</p>
+}
+else
+{
+    <h1>@Welcome</h1>
+}
+@code {
+    private string Name = string.Empty;
+    private string Welcome = string.Empty;
+    private bool isLoading = false;
+    private async void ChangeName()
+    {
+        isLoading = true;
+        await Task.Delay(500);
+        isLoading = false;
+        Name = "José";
+        StateHasChanged();
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await Task.Delay(500);
+        await Task.Run(() => { Welcome = "Bem vindo ao site!"; });
+    }
+}
+@*
+    O Blazor Server é um framework SPA que diferente do Blazor Webassembly, renderiza todo o html no servidor e de acordo com a requisição do usuário, o servidor vai liberando o html
+    Existem alguns tipos de renderizações como por exemplo:
+    StreamRendering -> é um atributo que tem a função de carregar o HTML carregado do servidor antes de qualquer chamada assincrona, isso evita que a página fique travada.
+    InteractiveServer -> é um tipo de renderização que diz que a interatividade do usuário será com o servidor.
+    
+    A renderização do lado do servidor (SSR) acontece da seguinte forma:
+
+    Browser ---REQUEST---> Servidor
+    Browser <---RESPONSE--- Servidor (HTML)
+
+
+*@
