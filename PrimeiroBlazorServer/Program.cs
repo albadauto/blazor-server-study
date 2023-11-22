@@ -1,4 +1,6 @@
 using PrimeiroBlazorServer.Components;
+using PrimeiroBlazorServer.Services;
+using PrimeiroBlazorServer.Services.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,7 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddScoped<ICEPService, CEPService>();
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

@@ -1,0 +1,66 @@
+﻿@page "/cep"
+@rendermode InteractiveServer
+@using Services.Interface
+@using Models
+@inject ICEPService Service
+
+<h3>FindCEP</h3>
+
+<input class="form-control" type="text" @bind-value="CEP" />
+<div class="container">
+    <div class="row text-center mt-5">
+        <div class="col">
+            <button class="btn btn-primary" @onclick="FindAddress">Enviar</button>
+
+        </div>
+    </div>
+</div>
+
+@if (isLoading)
+{
+    <p>Carregando...</p>
+}
+else
+{
+    @if (Address.Bairro != null)
+    {
+        <div class="container">
+            <div class="row ">
+                <div class="col">
+                    <p>IBGE: @Address.IBGE</p>
+                    <p>UF: @Address.UF</p>
+                    <p>Localidade: @Address.Localidade</p>
+                    <p>Bairro: @Address.Bairro</p>
+                    <p>Logradouro: @Address.Logradouro</p>
+                    <p>Complemento: @Address.Complemento</p>
+                    <p>BAIRRO: @Address.Bairro</p>
+                    <p>GIA: @Address.GIA</p>
+                    <p>DDD: @Address.DDD</p>
+                    <p>Siafi: @Address.Siafi</p>
+                </div>
+            </div>
+        </div>
+    }
+
+}
+
+@code {
+    private string CEP;
+    private Address Address = new Address();
+    private bool isLoading = false;
+    private async void FindAddress()
+    {
+        ChangeLoadingStatus();
+        var result = await Service.GetAddressByCEP(CEP);
+        ChangeLoadingStatus();
+        Address = result;
+        StateHasChanged();
+    }
+
+    private void ChangeLoadingStatus()
+    {
+        isLoading = !isLoading;
+    }
+
+    
+}
