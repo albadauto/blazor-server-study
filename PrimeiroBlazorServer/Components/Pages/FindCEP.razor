@@ -1,10 +1,10 @@
 ﻿@page "/cep"
-@rendermode InteractiveServer
 @using Services.Interface
 @using Models
 @inject ICEPService Service
+@rendermode InteractiveServer
 
-<h3>FindCEP</h3>
+<h3>Procurar Endereço pelo CEP</h3>
 
 <input class="form-control" type="text" @bind-value="CEP" />
 <div class="container">
@@ -19,7 +19,7 @@
 @if (isLoading)
 {
     <p>Carregando...</p>
-}
+} 
 else
 {
     @if (Address.Bairro != null)
@@ -39,6 +39,8 @@ else
                     <p>Siafi: @Address.Siafi</p>
                 </div>
             </div>
+
+           
         </div>
     }
 

@@ -1,0 +1,60 @@
+﻿@page "/cnpj"
+@using Models
+@using Services.Interface
+@rendermode InteractiveServer
+@inject ICNPJService Service
+
+<h3>FindCNPJ</h3>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <input type="text" class="form-control" @bind-value="CNPJ" />
+        </div>
+        <div class="col">
+            <button @onclick="GetEnterprise" class="btn btn-primary">Procurar</button>
+        </div>
+    </div>
+
+
+    @if (isLoading)
+    {
+        <p>Carregando...</p>
+    }
+    else
+    {
+        @if(Enterprise.Razao_Social != null)
+        {
+            <div class="row mt-5">
+                <div class="col">
+                    <p>Razão social: @Enterprise.Razao_Social</p>
+                    <p>CNPJ: @CNPJ</p>
+
+                </div>
+            </div>
+        }
+       
+
+    }
+
+</div>
+
+@code {
+    private string CNPJ;
+    private Enterprise Enterprise = new Enterprise();
+    private bool isLoading = false;
+
+    private async void GetEnterprise()
+    {
+        ChangeLoadState();
+        Enterprise = await Service.GetEnterprise(CNPJ);
+        ChangeLoadState();
+        StateHasChanged();
+    }
+
+
+    private void ChangeLoadState()
+    {
+        isLoading = !isLoading;
+    }
+}

@@ -9,6 +9,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddScoped<ICEPService, CEPService>();
+builder.Services.AddScoped<ICNPJService, CNPJService>();
 
 var app = builder.Build();
 
