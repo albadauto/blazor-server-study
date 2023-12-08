@@ -23,7 +23,7 @@
     }
     else
     {
-        @if(Enterprise.Razao_Social != null)
+        @if (Enterprise.Razao_Social != null)
         {
             <div class="row mt-5">
                 <div class="col">
@@ -33,8 +33,6 @@
                 </div>
             </div>
         }
-       
-
     }
 
 </div>
@@ -46,15 +44,11 @@
 
     private async void GetEnterprise()
     {
-        ChangeLoadState();
+        isLoading = true;
         Enterprise = await Service.GetEnterprise(CNPJ);
-        ChangeLoadState();
+        isLoading = !isLoading;
         StateHasChanged();
     }
 
 
-    private void ChangeLoadState()
-    {
-        isLoading = !isLoading;
-    }
 }

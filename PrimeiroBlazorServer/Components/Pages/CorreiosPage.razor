@@ -1,0 +1,75 @@
+﻿@page "/correios"
+@using Services.Interface
+@using Correios.NET.Models;
+@inject ICorreiosService Service
+@rendermode InteractiveServer
+<div class="text-center">
+    <h3>Correios</h3>
+</div>
+
+
+<div class="container text-center">
+    <div class="row">
+        <div class="col">
+            <input class="form-control" placeholder="Digite aqui o código de ratreio" @bind-value="code" />
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col">
+            <button class="btn btn-primary" @onclick="TrackPackage">Enviar</button>
+        </div>
+    </div>
+
+
+</div>
+
+@if (IsLoading)
+{
+    <p>Carregando...</p>
+}
+else
+{
+    if(Packages != null)
+    {
+        <div class="text-center">
+            <h1>Ultimos status</h1>
+            <h4>@Packages.LastStatus</h4>
+            
+        </div>
+       
+        <div class="text-center">
+            <h1>Histórico</h1>
+        </div>
+        <div class="text-center">
+
+            @foreach (var history in Packages.TrackingHistory)
+            {
+                <h4>@history.Date</h4>
+                <h4>@history.Destination</h4>
+                <h4>@history.Details</h4>
+                <h4>@history.Status</h4>
+
+            }
+        </div>
+
+        <br />
+    }
+    else
+    {
+       <p>Não há pacotes</p>
+    }
+
+}
+
+@code {
+    private Package? Packages;
+    private bool IsLoading = false;
+    private string code;
+    private async Task TrackPackage()
+    {
+        IsLoading = !IsLoading;
+        Packages = await Service.SearchPackage(code) ?? null;
+        IsLoading = !IsLoading;
+
+    }
+}
